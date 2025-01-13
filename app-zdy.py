@@ -1,12 +1,10 @@
-﻿import streamlit as st  
+import streamlit as st  
 import pandas as pd  
 import numpy as np  
 import joblib  
 import shap
 import lightgbm as lgb
-import matplotlib.pyplot as plt
-plt.rcParams['font.sans-serif'] = ['SimHei']
-plt.rcParams['axes.unicode_minus'] = False
+from streamlit_shap import st_shap
 
 # 初始化 session_state 中的 data
 if 'data' not in st.session_state:
@@ -190,9 +188,11 @@ if st.button("Submit"):
         expected_value = explainer.expected_value
     
     # 绘制 SHAP force plot
-    shap_fig = shap.force_plot(expected_value, shap_values, X.iloc[0], feature_names=feature_names[lang], matplotlib=True)
-    # st.set_option('deprecation.showPyplotGlobalUse', False)
-    st.pyplot(shap_fig)
+    shap.initjs()
+    shap_plot = shap.force_plot(expected_value, shap_values, X.iloc[0], feature_names=feature_names[lang])
+    
+    # 显示图表
+    st_shap(shap_plot, height=150)
     
     # 创建一个新的DataFrame来存储用户输入的数据
     new_data = pd.DataFrame([[a, b, c, d, e, f, g, h, i, j, k, l, m, n, result_prob_pos/100, None]], 
