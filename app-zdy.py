@@ -191,7 +191,7 @@ if st.button("Submit"):
     
     # 绘制 SHAP force plot
     shap_fig = shap.force_plot(expected_value, shap_values, X.iloc[0], feature_names=feature_names[lang], matplotlib=True)
-    st.set_option('deprecation.showPyplotGlobalUse', False)
+    # st.set_option('deprecation.showPyplotGlobalUse', False)
     st.pyplot(shap_fig)
     
     # 创建一个新的DataFrame来存储用户输入的数据
