@@ -157,7 +157,12 @@ feature_names = {
 mm = joblib.load('LightGBM.pkl')
     
 # If button is pressed
-if st.button("Submit"):
+if lang == '中文':
+    submit_button = st.button("提交")
+else:
+    submit_button = st.button("Submit")
+
+if submit_button:
     # Store inputs into dataframe
     X = pd.DataFrame([[a_val, b, c, d, e, f, g, h, i, j, k_val, l_val, m_val, n_val]], 
                      columns=["Gender","Age","5A","8A","9A","10A","33A","42A","47A","50A","2BB","3BB","4BB","11BB"])
@@ -192,7 +197,7 @@ if st.button("Submit"):
     shap_plot = shap.force_plot(expected_value, shap_values, X.iloc[0], feature_names=feature_names[lang])
     
     # 显示图表
-    st_shap(shap_plot, height=150)
+    st_shap(shap_plot, height=150, width=800)
     
     # 创建一个新的DataFrame来存储用户输入的数据
     new_data = pd.DataFrame([[a, b, c, d, e, f, g, h, i, j, k, l, m, n, result_prob_pos/100, None]], 
