@@ -15,7 +15,7 @@ st.set_page_config(layout="wide")
 
 st.sidebar.image("hospital_logo2.png", caption="", width=300)
 # Language setting  
-lang = st.sidebar.selectbox('Choose language', ['中文', 'English'])  
+lang = st.sidebar.selectbox('Choose language', ['中文', 'English'], index=1)
 
 # Footer  
 if lang == '中文':  
@@ -27,11 +27,10 @@ else:
 
 st.image("hospital_logo.png", caption="")
 if lang == '中文':  
-    st.header("肺结节恶性概率")
+    st.header("结节风险评估模型（NRA）V1.0 ")
 else:  
-    st.header("Malignant probability of lung nodules")
+    st.header("NoduleRisk Assessment（NRA) nodel V1.0")
 
-st.write("LightGBM Model")
 
 # 将输入分成两列，每列7个
 col1, col2 = st.columns(2)
