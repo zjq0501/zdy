@@ -11,7 +11,6 @@ if 'data' not in st.session_state:
 
 # 设置页面为宽模式
 st.set_page_config(layout="wide")
-
 st.sidebar.image("hospital_logo2.png", caption="", width=300)
 # Language setting  
 lang = st.sidebar.selectbox('Choose language', ['中文', 'English'], index=1)
@@ -31,8 +30,8 @@ else:
     st.header("NoduleRisk Assessment（NRA) nodel V1.0")
 
 
-# 将输入分成两列，每列7个
-col1, col2 = st.columns(2)
+# 将输入分成三列，每列3-4个
+col1, col2, col3 = st.columns(3)
 
 gender_mapping = {
     '中文': {'男': 1, '女': 2},
@@ -45,84 +44,88 @@ with col1:
         a = st.selectbox("性别", options, index=0)
         a_val = gender_mapping['中文'][a]
         
+        options_bl = ["无", "有"]
+        k = st.selectbox("咳痰", options_bl, index=0)
+        l = st.selectbox("咯血", options_bl, index=0)
+        m = st.selectbox("发热", options_bl, index=0)
+        
+        k_val = 1 if k == "有" else 0
+        l_val = 1 if l == "有" else 0
+        m_val = 1 if m == "有" else 0
+    else:
+        options = list(gender_mapping['English'].keys())
+        a = st.selectbox("Gender", options, index=0)
+        a_val = gender_mapping['English'][a]
+		
+        options_bl = ["No", "Yes"]
+        k = st.selectbox("Expectoration", options_bl, index=0)
+        l = st.selectbox("Hemoptysis", options_bl, index=0)
+        m = st.selectbox("Distress", options_bl, index=0)
+        
+        k_val = 1 if k == "Yes" else 0
+        l_val = 1 if l == "Yes" else 0
+        m_val = 1 if m == "Yes" else 0
+
+with col2:
+    if lang == '中文':
+        b_col, label_col = st.columns([8,2])
+        b = b_col.number_input("年龄", min_value=0, max_value=100, value=62)
+        label_col.markdown("岁")	
+
+        n_col, n_label_col = st.columns([8,2])
+        n = n_col.number_input("吸烟年数", min_value=0, max_value=100, value=30)
+        n_label_col.markdown("年")		
+
         c_col, c_label_col = st.columns([8,2])
-        c = c_col.number_input("癌抗原15-3", min_value=0.00, max_value=2000.00, value=12.50)
+        c = c_col.number_input("癌抗原15-3", min_value=0.00, max_value=2000.00, value=24.50)
         c_label_col.markdown("U/mL")
         
         d_col, d_label_col = st.columns([8,2])
         d = d_col.number_input("癌胚抗原", min_value=0.00, max_value=10000.00, value=2.49)
         d_label_col.markdown("ng/mL")
+    else:
+        b_col, label_col = st.columns([8,2])
+        b = b_col.number_input("Age", min_value=0, max_value=100, value=62)
+        label_col.markdown("years")
+		
+        n_col, n_label_col = st.columns([8,2])
+        n = n_col.number_input("Duration", min_value=0, max_value=100, value=30)
+        n_label_col.markdown("years")
+
+        c_col, c_label_col = st.columns([8,2])
+        c = c_col.number_input("CA15-3", min_value=0.00, max_value=2000.00, value=24.50)
+        c_label_col.markdown("U/mL")
         
+        d_col, d_label_col = st.columns([8,2])
+        d = d_col.number_input("CEA", min_value=0.00, max_value=10000.00, value=2.49)
+        d_label_col.markdown("ng/mL")
+		
+with col3:
+    if lang == '中文':
         e_col, e_label_col = st.columns([8,2])
-        e = e_col.number_input("细胞角蛋白19片段", min_value=0.00, max_value=200.00, value=2.74)
+        e = e_col.number_input("细胞角蛋白19片段", min_value=0.00, max_value=200.00, value=32.74)
         e_label_col.markdown("ng/mL")
         
         f_col, f_label_col = st.columns([8,2])
-        f = f_col.number_input("神经元特异性烯醇化酶", min_value=0.00, max_value=500.00, value=16.60)
+        f = f_col.number_input("神经元特异性烯醇化酶", min_value=0.00, max_value=500.00, value=21.60)
         f_label_col.markdown("ng/mL")
         
         g_col, g_label_col = st.columns([8,2])
         g = g_col.number_input("平均红细胞血红蛋白含量", min_value=0.0, max_value=100.0, value=39.7)
         g_label_col.markdown("pg")
     else:
-        options = list(gender_mapping['English'].keys())
-        a = st.selectbox("Gender", options, index=0)
-        a_val = gender_mapping['English'][a]
-        
-        c_col, c_label_col = st.columns([8,2])
-        c = c_col.number_input("CA15-3", min_value=0.00, max_value=2000.00, value=12.50)
-        c_label_col.markdown("U/mL")
-        
-        d_col, d_label_col = st.columns([8,2])
-        d = d_col.number_input("CEA", min_value=0.00, max_value=10000.00, value=2.49)
-        d_label_col.markdown("ng/mL")
-        
         e_col, e_label_col = st.columns([8,2])
-        e = e_col.number_input("CYFRA21-1", min_value=0.00, max_value=200.00, value=2.74)
+        e = e_col.number_input("CYFRA21-1", min_value=0.00, max_value=200.00, value=32.74)
         e_label_col.markdown("ng/mL")
         
         f_col, f_label_col = st.columns([8,2])
-        f = f_col.number_input("NSE", min_value=0.00, max_value=500.00, value=16.60)
+        f = f_col.number_input("NSE", min_value=0.00, max_value=500.00, value=21.60)
         f_label_col.markdown("ng/mL")
         
         g_col, g_label_col = st.columns([8,2])
         g = g_col.number_input("MCH", min_value=0.0, max_value=100.0, value=39.7)
         g_label_col.markdown("pg")
-
-with col2:
-    if lang == '中文':
-        options = ["无", "有"]
-        b_col, label_col = st.columns([8,2])
-        b = b_col.number_input("年龄", min_value=0, max_value=100, value=62)
-        label_col.markdown("岁")		
-
-        k = st.selectbox("咳痰", options, index=0)
-        l = st.selectbox("咯血", options, index=0)
-        m = st.selectbox("发热", options, index=0)
-        n_col, n_label_col = st.columns([8,2])
-        n = n_col.number_input("吸烟年数", min_value=0, max_value=100, value=30)
-        n_label_col.markdown("年")
-        
-        k_val = 1 if k == "有" else 0
-        l_val = 1 if l == "有" else 0
-        m_val = 1 if m == "有" else 0
-    else:
-        options = ["No", "Yes"]
-        b_col, label_col = st.columns([8,2])
-        b = b_col.number_input("Age", min_value=0, max_value=100, value=62)
-        label_col.markdown("years")
-
-        k = st.selectbox("Expectoration", options, index=0)
-        l = st.selectbox("Hemoptysis", options, index=0)
-        m = st.selectbox("Distress", options, index=0)
-        n_col, n_label_col = st.columns([8,2])
-        n = n_col.number_input("Duration", min_value=0, max_value=100, value=30)
-        n_label_col.markdown("years")
-        
-        k_val = 1 if k == "Yes" else 0
-        l_val = 1 if l == "Yes" else 0
-        m_val = 1 if m == "Yes" else 0
-
+		
 # 定义不同语言下的因子名称
 feature_names = {
     '中文': ['性别', '年龄', '癌抗原15-3', '癌胚抗原', '细胞角蛋白19片段', '神经元特异性烯醇化酶', '平均红细胞血红蛋白含量', '咳痰', '咯血', '发热', '吸烟年数'],
@@ -160,7 +163,8 @@ if submit_button:
     shap_values = shap_values.reshape((1, -1)) 
     # 绘制 SHAP force plot
     shap_plot = shap.force_plot(explainer.expected_value[1], shap_values[0], X.iloc[0], feature_names=feature_names[lang])
-    st_shap(shap_plot, height=150, width=800)
+    # st_shap(shap_plot, height=150, width=800)
+    st_shap(shap_plot, height=150)
 	
     # 创建一个新的DataFrame来存储用户输入的数据
     new_data = pd.DataFrame([[a_val, b, c, d, e, f, g, k_val,l_val,m_val,n, result_prob_pos/100, None]], 
