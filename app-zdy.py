@@ -4,7 +4,6 @@ import numpy as np
 import joblib  
 import shap
 from streamlit_shap import st_shap
-import streamlit.components.v1 as components
 
 # 初始化 session_state 中的 data
 if 'data' not in st.session_state:
@@ -157,19 +156,19 @@ if submit_button:
         st.text(f"The probability of malignancy is: {round(result_prob_pos, 2)}%")
     
     # 生成SHAP值并绘图
-    shap.initjs()
+    # shap.initjs()
     explainer = shap.TreeExplainer(mm) 
     shap_values = explainer.shap_values(X,check_additivity=False)[0]
     shap_values = shap_values[:,1] 
     shap_values = shap_values.reshape((1, -1)) 
     # 绘制 SHAP force plot
     shap_plot = shap.force_plot(explainer.expected_value[1], shap_values[0], X.iloc[0], feature_names=feature_names[lang])
-    shap_html = f"<head>{shap.getjs()}</head><body>{shap_plot.html()}</body>"
+    # shap_html = f"<head>{shap.getjs()}</head><body>{shap_plot.html()}</body>"
 
     # 在 Streamlit 中渲染
-    components.html(shap_html, height=150)
+    # components.html(shap_html, height=150)
     # st_shap(shap_plot, height=150, width=800)
-    # st_shap(shap_plot, height=150)	
+    st_shap(shap_plot, height=150)	
 	
     # 创建一个新的DataFrame来存储用户输入的数据
     new_data = pd.DataFrame([[a_val, b, c, d, e, f, g, k_val,l_val,m_val,n, result_prob_pos/100, None]], 
