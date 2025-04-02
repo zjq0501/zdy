@@ -156,7 +156,7 @@ if submit_button:
         st.text(f"The probability of malignancy is: {round(result_prob_pos, 2)}%")
     
     # 生成SHAP值并绘图
-    # shap.initjs()
+    shap.initjs()
     explainer = shap.TreeExplainer(mm) 
     shap_values = explainer.shap_values(X,check_additivity=False)[0]
     shap_values = shap_values[:,1] 
