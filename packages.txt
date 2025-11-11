@@ -4,5 +4,11 @@ libxext6
 gifsicle
 build-essential
 python3-dev
+
+# 关键：我们先于 GDAL 安装完整的 unixodbc-dev
+# 这会正确地包含 libodbc2 和 libodbcinst2
+unixodbc-dev
+
+# GDAL 包放在后面
 gdal-bin
 libgdal-dev
